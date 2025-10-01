@@ -1,9 +1,9 @@
 
 import express from "express";
-import usuarioRoutes from "../presentation/routes/UsuarioRoutes.js"
-import loginRoutes from "../presentation/routes/loginRoutes.js"
-import productoRoutes from "../presentation/routes/ProductoRoutes.js"
-import pedidoRoutes from "../presentation/routes/PedidoRoutes.js"
+import usuarioRoutes from "./routes/UsuarioRoutes.js"
+import loginRoutes from "./routes/LoginRoutes.js"
+import productoRoutes from "./routes/ProductoRoutes.js"
+import pedidoRoutes from "./routes/PedidoRoutes.js"
 import cors from "cors";
 
 const app = express();
