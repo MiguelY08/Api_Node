@@ -1,7 +1,7 @@
 import GetPedidoUseCase from "../../Application/use_cases/pedido/GetPedido.js";
 import GetPedidoByIdUseCase from "../../Application/use_cases/pedido/GetPedidoById.js";
 import CrearPedido from "../../Application/use_cases/pedido/PostPedido.js";
-import { PutPedidoUseCase } from "../../Application/use_cases/pedido/PutPedido.js";
+import PutPedidoUseCase from "../../Application/use_cases/pedido/PutPedido.js";
 import CancelarPedido from "../../Application/use_cases/pedido/PutPedido.js";
 
 import PedidoRepository from "../../infrastructure/repositories/PedidoRepositoryMongo.js";

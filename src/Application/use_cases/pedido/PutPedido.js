@@ -1,4 +1,4 @@
-export default class PutPedido {
+export default class PutPedidoUseCase {
   constructor(pedidoRepository, productoRepository) {
     this.pedidoRepository = pedidoRepository;
     this.productoRepository = productoRepository;
