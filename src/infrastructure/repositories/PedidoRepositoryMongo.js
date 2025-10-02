@@ -58,9 +58,23 @@ export default class PedidoRepositoryMongo {
     return this.toDomain(pedidoDoc);
   }
 
-  // GET BY CUSTOM ID
-  async getByIdPedido(idPedido) {
-    const pedidoDoc = await PedidoModel.findOne({ idPedido });
+  // GET BY CUSTOM ID or MongoDB _id
+  async getByIdPedido(id) {
+    let pedidoDoc;
+    
+    // Primero intentar buscar por idPedido personalizado
+    pedidoDoc = await PedidoModel.findOne({ idPedido: id });
+    
+    // Si no encuentra, intentar buscar por _id de MongoDB
+    if (!pedidoDoc) {
+      try {
+        pedidoDoc = await PedidoModel.findById(id);
+      } catch (error) {
+        // Si no es un ObjectId válido, ignorar el error
+        console.log("No es un ObjectId válido:", id);
+      }
+    }
+    
     return this.toDomain(pedidoDoc);
   }
 
@@ -70,9 +84,22 @@ export default class PedidoRepositoryMongo {
     return pedidosDoc.map((p) => this.toDomain(p));
   }
 
-  // UPDATE BY CUSTOM ID
-  async updateByIdPedido(idPedido, data) {
-    const pedidoDoc = await PedidoModel.findOneAndUpdate({ idPedido }, data, { new: true });
+  // UPDATE BY CUSTOM ID or MongoDB _id
+  async updateByIdPedido(id, data) {
+    let pedidoDoc;
+    
+    // Primero intentar actualizar por idPedido personalizado
+    pedidoDoc = await PedidoModel.findOneAndUpdate({ idPedido: id }, data, { new: true });
+    
+    // Si no encuentra, intentar actualizar por _id de MongoDB
+    if (!pedidoDoc) {
+      try {
+        pedidoDoc = await PedidoModel.findByIdAndUpdate(id, data, { new: true });
+      } catch (error) {
+        console.log("No es un ObjectId válido para actualizar:", id);
+      }
+    }
+    
     return this.toDomain(pedidoDoc);
   }
 
@@ -80,5 +107,5 @@ export default class PedidoRepositoryMongo {
   async deleteByIdPedido(idPedido) {
     const pedidoDoc = await PedidoModel.findOneAndDelete({ idPedido });
     return this.toDomain(pedidoDoc);
-  }
+  }
 }
