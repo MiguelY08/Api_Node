@@ -63,7 +63,7 @@ export default class PedidoRepositoryMongo {
     let pedidoDoc;
     
     // Primero intentar buscar por idPedido personalizado
-    pedidoDoc = await PedidoModel.findOne({ idPedido: id });
+    pedidoDoc = await PedidoModel.findOne({ idPedido: idPedido });
     
     // Si no encuentra, intentar buscar por _id de MongoDB
     if (!pedidoDoc) {
