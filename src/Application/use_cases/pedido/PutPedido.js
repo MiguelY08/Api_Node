@@ -1,30 +1,27 @@
-export default class CancelarPedido {
-  constructor(pedidoRepository, productoRepository) {
+export default class PutPedido {
+  constructor(pedidoRepository) {
     this.pedidoRepository = pedidoRepository;
-    this.productoRepository = productoRepository;
   }
 
-  async execute(idPedido) {
-    // 1. Buscar pedido
-    const pedido = await this.pedidoRepository.getByIdPedido(idPedido);
-    if (!pedido) throw new Error("Pedido no encontrado");
-
-    // 2. Validar si ya está cancelado
-    if (pedido.estado === "cancelado") {
-      throw new Error("El pedido ya está cancelado");
+  async execute(idPedido, data) {
+    // 1. Buscar pedido existente
+    const pedidoExistente = await this.pedidoRepository.getByIdPedido(idPedido);
+    if (!pedidoExistente) {
+      throw new Error("Pedido no encontrado");
     }
 
-    // 3. Devolver stock de cada detalle
-    for (const detalle of pedido.detalles) {
-      await this.productoRepository.incrementarStock(
-        detalle.idProducto,
-        detalle.cantidad
-      );
-    }
+    // 2. Actualizar campos permitidos
+    pedidoExistente.estado = data.estado || pedidoExistente.estado;
+    pedidoExistente.detalles = data.detalles || pedidoExistente.detalles;
+    pedidoExistente.total = data.total || pedidoExistente.total;
+    pedidoExistente.createdAt = data.createdAt || pedidoExistente.createdAt;
 
-    // 4. Actualizar estado del pedido
-    pedido.estado = "cancelado";
+    // 3. Guardar cambios en repositorio
+    const pedidoActualizado = await this.pedidoRepository.updateByIdPedido(
+      idPedido,
+      pedidoExistente
+    );
 
-    return await this.pedidoRepository.updateByIdPedido(idPedido, pedido);
+    return pedidoActualizado;
   }
 }
