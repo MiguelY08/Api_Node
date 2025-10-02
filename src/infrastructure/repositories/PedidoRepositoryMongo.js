@@ -59,7 +59,7 @@ export default class PedidoRepositoryMongo {
   }
 
   // GET BY CUSTOM ID or MongoDB _id
-  async getByIdPedido(id) {
+  async getByIdPedido(idPedido) {
     let pedidoDoc;
     
     // Primero intentar buscar por idPedido personalizado
@@ -68,10 +68,10 @@ export default class PedidoRepositoryMongo {
     // Si no encuentra, intentar buscar por _id de MongoDB
     if (!pedidoDoc) {
       try {
-        pedidoDoc = await PedidoModel.findById(id);
+        pedidoDoc = await PedidoModel.findById(idPedido);
       } catch (error) {
         // Si no es un ObjectId válido, ignorar el error
-        console.log("No es un ObjectId válido:", id);
+        console.log("No es un ObjectId válido:", idPedido);
       }
     }
     
@@ -85,18 +85,18 @@ export default class PedidoRepositoryMongo {
   }
 
   // UPDATE BY CUSTOM ID or MongoDB _id
-  async updateByIdPedido(id, data) {
+  async updateByIdPedido(idPedido, data) {
     let pedidoDoc;
     
     // Primero intentar actualizar por idPedido personalizado
-    pedidoDoc = await PedidoModel.findOneAndUpdate({ idPedido: id }, data, { new: true });
+    pedidoDoc = await PedidoModel.findOneAndUpdate({ idPedido: idPedido }, data, { new: true });
     
     // Si no encuentra, intentar actualizar por _id de MongoDB
     if (!pedidoDoc) {
       try {
-        pedidoDoc = await PedidoModel.findByIdAndUpdate(id, data, { new: true });
+        pedidoDoc = await PedidoModel.findByIdAndUpdate(idPedido, data, { new: true });
       } catch (error) {
-        console.log("No es un ObjectId válido para actualizar:", id);
+        console.log("No es un ObjectId válido para actualizar:", idPedido);
       }
     }
     
